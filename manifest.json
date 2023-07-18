@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "QBO Remove Ads",
   "version": "1.0",
-  "description": "Removes Marketing Advertisments from QuickBooks Online. If you pay for Quickbooks Online, you shouldn't have to see ads.",
+  "description": "Removes Marketing Advertisements from QuickBooks Online. If you pay for Quickbooks Online, you shouldn't have to see ads.",
   "icons": {
     "16": "images/icon-16.png",
     "32": "images/icon-32.png",
