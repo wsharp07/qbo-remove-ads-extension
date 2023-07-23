@@ -1,21 +1,51 @@
+let options = {};
+
+/**
+ * Appends new ad types to this dictionary.
+ */
+const adDictionary = [
+  {
+    key: "marketing",
+    class: "marketing-ipd-tsa-widgets",
+    enabled: () => options.isMarketingEnabled,
+  },
+  {
+    key: "product",
+    class: "explore-products-container-wrapper",
+    enabled: () => options.isProductEnabled,
+  },
+  {
+    key: "checking",
+    class: "card-content-qbchecking-promo",
+    enabled: () => options.isCheckingEnabled,
+  },
+  {
+    key: "loans",
+    class: "capital-loan-application-card-container",
+    enabled: () => options.isLoansEnabled,
+  },
+];
+
 /**
  * Writes a debug message to the console.
- * @param {string} message
+ * @param {*} message
  */
 const writeDebug = (message) => {
-  console.debug(`[QBO Widget] ${message}`);
+  console.debug('[QBO Widget]',message);
 };
 
 /**
- * Removes the QBO advertisement from the DOM.
- * @param {string} className CSS Class Name of the QBO advertisement.
+ * Loads the options from storage.
  */
-const removeAd = (className) => {
-  const ad = document.querySelector(className);
-
-  if (ad) {
-    ad.remove();
-  }
+const loadOptions = async () => {
+  options = await chrome.storage.sync.get(
+    {
+      isMarketingEnabled: true,
+      isProductEnabled: true,
+      isCheckingEnabled: true,
+      isLoansEnabled: true,
+    }
+  );
 };
 
 /**
@@ -24,12 +54,20 @@ const removeAd = (className) => {
  * @param {MutationRecord[]} mutationList
  * @param {MutationObserver} observer
  */
-const adRemovalCallback = (mutationList, observer) => {
-  removeAd(".marketing-ipd-tsa-widgets");
-  removeAd(".explore-products-container-wrapper");
-  removeAd(".card-content-qbchecking-promo");
-  removeAd(".capital-loan-application-card-container");
+const adRemovalCallback = async (mutationList, observer) => {
+  for (const mutation of mutationList) {
+    for (const node of mutation.addedNodes) {
+      for (const ad of adDictionary) {
+        if (node.classList?.contains(ad.class) && ad.enabled()) {
+          node.remove();
+        }
+      }
+    }
+  }
 };
+
+// Load the options saved by the user
+loadOptions();
 
 // Create the observer
 const adObserver = new MutationObserver(adRemovalCallback);
