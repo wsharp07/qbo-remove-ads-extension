@@ -9,6 +9,9 @@
     "64": "images/icon-64.png",
     "128": "images/icon-128.png"
   },
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
       "js": [
@@ -19,5 +22,9 @@
         "https://app.qbo.intuit.com/app/*"
       ]
     }
-  ]
+  ],
+  "options_ui": {
+    "page": "scripts/options.html",
+    "open_in_tab": false
+  }
 }
