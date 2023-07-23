@@ -31,16 +31,6 @@ const saveOptions = async () => {
   });
 
   showAlert("Options saved.");
-
-  await chrome.runtime.sendMessage({
-    data: {
-      isMarketingEnabled,
-      isProductEnabled,
-      isCheckingEnabled,
-      isLoansEnabled,
-    },
-    type: "options-saved",
-  });
 };
 
 /**
